@@ -2,6 +2,11 @@
 
 enum { id_button1 = 1, id_button2 };
 
+void OnClose(HWND hw) {
+	if (IDNO != MessageBox(hw, "Really exit ?", "NWP 1", MB_YESNO | MB_ICONQUESTION))
+		DestroyWindow(hw);
+}
+
 void OnCreate(HWND hw) {
 
 	CreateWindow("BUTTON", "one", WS_CHILD | WS_VISIBLE,
@@ -21,7 +26,7 @@ void OnCommand(HWND hw, int id) {
 		break;
 
 	case id_button2:
-		MessageBox(hw, "one", NULL, MB_ICONWARNING | MB_OK);
+		MessageBox(hw, "two", NULL, MB_ICONWARNING | MB_OK);
 		break;
 	}
 }
@@ -34,11 +39,9 @@ LRESULT CALLBACK WndProc(HWND hw, UINT msg, WPARAM wp, LPARAM lp)
 {
 	switch (msg)
 	{
-	case WM_CLOSE:
-
-		if (IDNO != MessageBox(hw, "Really exit ?", "NWP 1", MB_YESNO | MB_ICONQUESTION))
-			DestroyWindow(hw);
-
+		case WM_CLOSE:
+			OnClose(hw);
+			return 0;
 		case WM_CREATE:
 			OnCreate(hw);
 			return 0;
